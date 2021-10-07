@@ -1,0 +1,39 @@
+!Job
+target: !Target
+  head: 871940605a50f98a13ace30547e33bab87538a6e
+  email: unknown
+  branch: ARROW-13610-unvendor-cpp11
+  remote: https://github.com/jonkeane/arrow.git
+  version: 6.0.0.dev428
+  no_rc_version: 6.0.0.dev428
+  no_rc_semver_version: 6.0.0-dev428
+tasks:
+  test-r-rhub-debian-gcc-devel-lto-latest: !Task
+    ci: azure
+    template: r/azure.linux.yml
+    artifacts: []
+    params:
+      r_org: rhub
+      r_image: debian-gcc-devel-lto
+      r_tag: latest
+      flags: -e NOT_CRAN=false -e INSTALL_ARGS=--use-LTO
+
+  # This one has -flto=auto
+    branch: actions-905-azure-test-r-rhub-debian-gcc-devel-lto-latest
+    commit: 1978d00f366bcdccc082ed32a2c62817827b5769
+  test-r-ubuntu-21.04: !Task
+    ci: github
+    template: docker-tests/github.linux.yml
+    artifacts: []
+    params:
+      env:
+        UBUNTU: 21.04
+        CLANG_TOOLS: 9 # can remove this when >=9 is the default
+      flags: -e ARROW_SOURCE_HOME="/arrow" -e FORCE_BUNDLED_BUILD=TRUE -e LIBARROW_BUILD=TRUE
+      image: ubuntu-r-only-r
+
+  # This also has -flto=auto
+    branch: actions-905-github-test-r-ubuntu-21.04
+    commit: 9798a201209cf5f944006c347aa2f964e171b9c8
+params: {}
+branch: actions-905
