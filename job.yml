@@ -1,0 +1,28 @@
+!Job
+target: !Target
+  head: 15d508846e6575c38449c642b5facfbbb4fabff0
+  email: unknown
+  branch: ARROW-14300-xsimd-limites
+  remote: https://github.com/pitrou/arrow.git
+  version: 6.0.0.dev450
+  no_rc_version: 6.0.0.dev450
+  no_rc_semver_version: 6.0.0-dev450
+tasks:
+  test-r-gcc-11: !Task
+    ci: github
+    template: docker-tests/github.linux.yml
+    artifacts: []
+    params:
+      env:
+        UBUNTU: 21.04
+        CLANG_TOOLS: 9 # can remove this when >=9 is the default
+        GCC_VERSION: 11
+      # S3 support is not buildable with gcc11 right now
+      flags: -e ARROW_SOURCE_HOME="/arrow" -e FORCE_BUNDLED_BUILD=TRUE -e LIBARROW_BUILD=TRUE
+        -e ARROW_S3=OFF
+      image: ubuntu-r-only-r
+
+    branch: actions-919-github-test-r-gcc-11
+    commit: 35044b5d8dda9575148e11270cbfe52283d0e5d9
+params: {}
+branch: actions-919
