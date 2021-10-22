@@ -1,0 +1,75 @@
+!Job
+target: !Target
+  head: 8c11586d1e0236cfa0036788d55865a34b16399b
+  email: unknown
+  branch: release-6.0.0-rc3
+  remote: https://github.com/kszucs/arrow.git
+  version: 7.0.0.dev4
+  no_rc_version: 7.0.0.dev4
+  no_rc_semver_version: 7.0.0-dev4
+tasks:
+  verify-rc-wheels-windows: !Task
+    ci: github
+    template: verify-rc/github.win.yml
+    artifacts: []
+    params:
+      script: verify-release-candidate-wheels.bat
+
+
+    branch: actions-1044-github-verify-rc-wheels-windows
+    commit: 405cc11c42120e1216a92ba07dcfc3a328ff8aae
+  verify-rc-wheels-macos-11-arm64: !Task
+    ci: github
+    template: verify-rc/github.macos.arm64.yml
+    artifacts: []
+    params:
+      github_runner: self-hosted
+      arch_emulation: arm64
+      env:
+        TEST_DEFAULT: 0
+      artifact: wheels
+
+    branch: actions-1044-github-verify-rc-wheels-macos-11-arm64
+    commit: 8618b7e1e1a7887d4be32a12c131ed8b47812c68
+  verify-rc-wheels-macos-11-amd64: !Task
+    ci: github
+    template: verify-rc/github.macos.arm64.yml
+    artifacts: []
+    params:
+      github_runner: self-hosted
+      arch_emulation: x86_64
+      env:
+        TEST_DEFAULT: 0
+      artifact: wheels
+
+    branch: actions-1044-github-verify-rc-wheels-macos-11-amd64
+    commit: 783110105dde739c8d19841a6d4926489a88c59c
+  verify-rc-wheels-macos-10.15-amd64: !Task
+    ci: github
+    template: verify-rc/github.macos.amd64.yml
+    artifacts: []
+    params:
+      github_runner: macos-10.15
+      env:
+        TEST_DEFAULT: 0
+      artifact: wheels
+
+  # The github hosted macos-11 runners are in preview only, but should be switched once they are generally available:
+  #   https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners#supported-runners-and-hardware-resources
+    branch: actions-1044-github-verify-rc-wheels-macos-10.15-amd64
+    commit: 80b6fd652251e745f7a191e6057d03b13135c428
+  verify-rc-wheels-linux-amd64: !Task
+    ci: github
+    template: verify-rc/github.linux.amd64.yml
+    artifacts: []
+    params:
+      env:
+        TEST_DEFAULT: 0
+      artifact: wheels
+
+    branch: actions-1044-github-verify-rc-wheels-linux-amd64
+    commit: 2b6059e26da31449a9c765e9bbef156774eb5e30
+params:
+  release: 6.0.0
+  rc: '3'
+branch: actions-1044
