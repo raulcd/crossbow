@@ -1,0 +1,75 @@
+!Job
+target: !Target
+  head: 8c11586d1e0236cfa0036788d55865a34b16399b
+  email: unknown
+  branch: release-6.0.0-rc3
+  remote: https://github.com/kszucs/arrow.git
+  version: 7.0.0.dev4
+  no_rc_version: 7.0.0.dev4
+  no_rc_semver_version: 7.0.0-dev4
+tasks:
+  verify-rc-wheels-linux-amd64: !Task
+    ci: github
+    template: verify-rc/github.linux.amd64.yml
+    artifacts: []
+    params:
+      env:
+        TEST_DEFAULT: 0
+      artifact: wheels
+
+    branch: actions-1047-github-verify-rc-wheels-linux-amd64
+    commit: 68cac39653bdb084db036c69053a2bc1c3ba4a94
+  verify-rc-wheels-macos-10.15-amd64: !Task
+    ci: github
+    template: verify-rc/github.macos.amd64.yml
+    artifacts: []
+    params:
+      github_runner: macos-10.15
+      env:
+        TEST_DEFAULT: 0
+      artifact: wheels
+
+  # The github hosted macos-11 runners are in preview only, but should be switched once they are generally available:
+  #   https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners#supported-runners-and-hardware-resources
+    branch: actions-1047-github-verify-rc-wheels-macos-10.15-amd64
+    commit: c6360842ba42bda5b0c6d0d1715b1a588079c4e7
+  verify-rc-wheels-windows: !Task
+    ci: github
+    template: verify-rc/github.win.yml
+    artifacts: []
+    params:
+      script: verify-release-candidate-wheels.bat
+
+
+    branch: actions-1047-github-verify-rc-wheels-windows
+    commit: aa81850c724975b795768d75b7e7367bd27e5727
+  verify-rc-wheels-macos-11-arm64: !Task
+    ci: github
+    template: verify-rc/github.macos.arm64.yml
+    artifacts: []
+    params:
+      github_runner: self-hosted
+      arch_emulation: arm64
+      env:
+        TEST_DEFAULT: 0
+      artifact: wheels
+
+    branch: actions-1047-github-verify-rc-wheels-macos-11-arm64
+    commit: 6bd089f42465d710bcdf02620db0fd46575dae90
+  verify-rc-wheels-macos-11-amd64: !Task
+    ci: github
+    template: verify-rc/github.macos.arm64.yml
+    artifacts: []
+    params:
+      github_runner: self-hosted
+      arch_emulation: x86_64
+      env:
+        TEST_DEFAULT: 0
+      artifact: wheels
+
+    branch: actions-1047-github-verify-rc-wheels-macos-11-amd64
+    commit: e935d9f86a02d8bcd8acd05b5de5887dbc23a190
+params:
+  release: 6.0.0
+  rc: '3'
+branch: actions-1047
