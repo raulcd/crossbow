@@ -1,0 +1,168 @@
+!Job
+target: !Target
+  head: 00c1353187cb086bb6f85696df340b31d20c1ece
+  email: unknown
+  branch: bugfix/remove-privileged-ci
+  remote: https://github.com/uccross/skyhookdm-arrow.git
+  version: 7.0.0.dev76
+  no_rc_version: 7.0.0.dev76
+  no_rc_semver_version: 7.0.0-dev76
+tasks:
+  test-ubuntu-20.04-cpp-thread-sanitizer: !Task
+    ci: github
+    template: docker-tests/github.linux.yml
+    artifacts: []
+    params:
+      env:
+        # clang-tools and llvm version need to be synchronized so as
+        # to have the right llvm-symbolizer version
+        CLANG_TOOLS: 11
+        LLVM: 11
+        UBUNTU: 20.04
+      image: ubuntu-cpp-thread-sanitizer
+
+    branch: actions-1105-github-test-ubuntu-20.04-cpp-thread-sanitizer
+    commit: 80a6c92b79f4ce04dfdbd554cea28cd2e64fc932
+  test-ubuntu-18.04-cpp-static: !Task
+    ci: github
+    template: docker-tests/github.linux.yml
+    artifacts: []
+    params:
+      env:
+        UBUNTU: 18.04
+      flags: -e ARROW_BUILD_SHARED=OFF -e ARROW_BUILD_STATIC=ON -e ARROW_TEST_LINKAGE=static
+      image: ubuntu-cpp
+
+    branch: actions-1105-github-test-ubuntu-18.04-cpp-static
+    commit: f0a91c809f09eaa84dd09e0c142c77c1a692d61b
+  test-ubuntu-20.04-cpp-14: !Task
+    ci: github
+    template: docker-tests/github.linux.yml
+    artifacts: []
+    params:
+      env:
+        UBUNTU: 20.04
+      flags: -e CMAKE_ARGS=-DCMAKE_CXX_STANDARD=14
+      image: ubuntu-cpp
+    branch: actions-1105-github-test-ubuntu-20.04-cpp-14
+    commit: d0ba3e91980eb977a5237cdcbe6c85dc4d2e13d2
+  test-ubuntu-18.04-cpp: !Task
+    ci: github
+    template: docker-tests/github.linux.yml
+    artifacts: []
+    params:
+      env:
+        UBUNTU: '18.04'
+      image: ubuntu-cpp
+    branch: actions-1105-github-test-ubuntu-18.04-cpp
+    commit: 04af15b03daf743bde2eb3ba26bc627455a78937
+  test-ubuntu-ruby: !Task
+    ci: github
+    template: docker-tests/github.linux.yml
+    artifacts: []
+    params:
+      image: ubuntu-ruby
+
+  # Use azure to run valgrind tests to prevent OOM
+    branch: actions-1105-github-test-ubuntu-ruby
+    commit: 4fdbc2ffa052c84e95cc79009dbda50b68173cff
+  test-ubuntu-default-docs: !Task
+    ci: azure
+    template: docker-tests/azure.linux.yml
+    artifacts: []
+    params:
+      run: ubuntu-docs
+
+  ############################## Fuzz tests #################################
+
+    branch: actions-1105-azure-test-ubuntu-default-docs
+    commit: 4ec1432496f93a5d54ecf1292a38b1880e3778fd
+  test-ubuntu-20.04-cpp-17: !Task
+    ci: github
+    template: docker-tests/github.linux.yml
+    artifacts: []
+    params:
+      env:
+        UBUNTU: 20.04
+      flags: -e CMAKE_ARGS=-DCMAKE_CXX_STANDARD=17
+      image: ubuntu-cpp
+
+    branch: actions-1105-github-test-ubuntu-20.04-cpp-17
+    commit: 0927a58449ff0f330e961dd2c36f457895604b55
+  test-ubuntu-20.10-docs: !Task
+    ci: azure
+    template: docker-tests/azure.linux.yml
+    artifacts: []
+    params:
+      env:
+        UBUNTU: '20.10'
+      run: ubuntu-docs
+
+    branch: actions-1105-azure-test-ubuntu-20.10-docs
+    commit: 8475f2a531ff10aa30f4f96e8cf55cdd4cbb6db8
+  test-ubuntu-18.04-cpp-release: !Task
+    ci: github
+    template: docker-tests/github.linux.yml
+    artifacts: []
+    params:
+      env:
+        UBUNTU: 18.04
+      flags: -e ARROW_BUILD_TYPE=release
+      image: ubuntu-cpp
+
+    branch: actions-1105-github-test-ubuntu-18.04-cpp-release
+    commit: 7bc5a0095fa1f27753296bed2be544853c9af7b4
+  test-ubuntu-20.04-cpp: !Task
+    ci: github
+    template: docker-tests/github.linux.yml
+    artifacts: []
+    params:
+      env:
+        UBUNTU: '20.04'
+      image: ubuntu-cpp
+
+    branch: actions-1105-github-test-ubuntu-20.04-cpp
+    commit: 31c67857e74b2450a8c5e0241927564f923e3e75
+  test-ubuntu-20.04-cpp-bundled: !Task
+    ci: github
+    template: docker-tests/github.linux.yml
+    artifacts: []
+    params:
+      env:
+        UBUNTU: 20.04
+      image: ubuntu-cpp-bundled
+
+    branch: actions-1105-github-test-ubuntu-20.04-cpp-bundled
+    commit: 6c1f1ebd5aa4c224fe5037f3b50472bff9b5ffcd
+  test-ubuntu-18.04-python-3: !Task
+    ci: azure
+    template: docker-tests/azure.linux.yml
+    artifacts: []
+    params:
+      env:
+        UBUNTU: 18.04
+      run: ubuntu-python
+
+    branch: actions-1105-azure-test-ubuntu-18.04-python-3
+    commit: 29994aa7bbc24b86f8db748e356ae37828d91034
+  test-ubuntu-18.04-r-sanitizer: !Task
+    ci: azure
+    template: docker-tests/azure.linux.yml
+    artifacts: []
+    params:
+      env:
+        UBUNTU: 18.04
+      run: ubuntu-r-sanitizer
+
+    branch: actions-1105-azure-test-ubuntu-18.04-r-sanitizer
+    commit: 533d6216015461ff3246ddc322e09851b9cec915
+  test-ubuntu-c-glib: !Task
+    ci: github
+    template: docker-tests/github.linux.yml
+    artifacts: []
+    params:
+      image: ubuntu-c-glib
+    branch: actions-1105-github-test-ubuntu-c-glib
+    commit: 06798b258efc1f477230ddf731545aa929482b2a
+params: {}
+branch: actions-1105
