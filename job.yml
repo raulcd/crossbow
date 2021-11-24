@@ -1,0 +1,50 @@
+!Job
+target: !Target
+  head: 12fc6d20139fd0ec2a3c4977aeed8769dd0e4042
+  email: unknown
+  branch: duckdb-dependency-build
+  remote: https://github.com/jonkeane/arrow.git
+  version: 7.0.0.dev187
+  no_rc_version: 7.0.0.dev187
+  no_rc_semver_version: 7.0.0-dev187
+tasks:
+  test-fedora-r-clang-sanitizer: !Task
+    ci: azure
+    template: docker-tests/azure.linux.yml
+    artifacts: []
+    params:
+      env:
+        R_PRUNE_DEPS: true
+      run: fedora-r-clang-sanitizer
+
+    branch: actions-1179-azure-test-fedora-r-clang-sanitizer
+    commit: 3a05117ef4087352814ccb0c2cc89b699d6f82d6
+  test-ubuntu-18.04-r-sanitizer: !Task
+    ci: azure
+    template: docker-tests/azure.linux.yml
+    artifacts: []
+    params:
+      env:
+        UBUNTU: 18.04
+        R_PRUNE_DEPS: true
+      run: ubuntu-r-sanitizer
+
+    branch: actions-1179-azure-test-ubuntu-18.04-r-sanitizer
+    commit: dbe6612db247876d499bbc6e6304b0f39e8717a0
+  test-r-ubuntu-21.04: !Task
+    ci: github
+    template: docker-tests/github.linux.yml
+    artifacts: []
+    params:
+      env:
+        UBUNTU: 21.04
+        CLANG_TOOLS: 9 # can remove this when >=9 is the default
+        R_PRUNE_DEPS: true
+      flags: -e ARROW_SOURCE_HOME="/arrow" -e FORCE_BUNDLED_BUILD=TRUE -e LIBARROW_BUILD=TRUE
+      image: ubuntu-r-only-r
+
+  # This also has -flto=auto
+    branch: actions-1179-github-test-r-ubuntu-21.04
+    commit: 6dae6ed6d6f50b2de71483c9b930c33fb8e745d7
+params: {}
+branch: actions-1179
