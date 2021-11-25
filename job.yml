@@ -1,0 +1,50 @@
+!Job
+target: !Target
+  head: c580ccea88063ce17500a8c3716b63442e44805a
+  email: unknown
+  branch: duckdb-dependency-build
+  remote: https://github.com/jonkeane/arrow.git
+  version: 7.0.0.dev188
+  no_rc_version: 7.0.0.dev188
+  no_rc_semver_version: 7.0.0-dev188
+tasks:
+  test-r-ubuntu-21.04: !Task
+    ci: github
+    template: docker-tests/github.linux.yml
+    artifacts: []
+    params:
+      env:
+        UBUNTU: 21.04
+        CLANG_TOOLS: 9 # can remove this when >=9 is the default
+        R_PRUNE_DEPS: true
+      flags: -e ARROW_SOURCE_HOME="/arrow" -e FORCE_BUNDLED_BUILD=TRUE -e LIBARROW_BUILD=TRUE
+      image: ubuntu-r-only-r
+
+  # This also has -flto=auto
+    branch: actions-1184-github-test-r-ubuntu-21.04
+    commit: 4a3455e500ed8c10e0dd01ce714647f08170792c
+  test-fedora-r-clang-sanitizer: !Task
+    ci: azure
+    template: docker-tests/azure.linux.yml
+    artifacts: []
+    params:
+      env:
+        R_PRUNE_DEPS: true
+      run: fedora-r-clang-sanitizer
+
+    branch: actions-1184-azure-test-fedora-r-clang-sanitizer
+    commit: a7867722e0a8ee030b70ea5e4f4a482ec02c1694
+  test-ubuntu-18.04-r-sanitizer: !Task
+    ci: azure
+    template: docker-tests/azure.linux.yml
+    artifacts: []
+    params:
+      env:
+        UBUNTU: 18.04
+        R_PRUNE_DEPS: true
+      run: ubuntu-r-sanitizer
+
+    branch: actions-1184-azure-test-ubuntu-18.04-r-sanitizer
+    commit: 71fb325d59c08a0a9069524d5798a373380c3412
+params: {}
+branch: actions-1184
