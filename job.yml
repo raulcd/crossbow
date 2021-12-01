@@ -1,0 +1,41 @@
+!Job
+target: !Target
+  head: 8ab693734997f4085b50a56318d2ac07dfb8f554
+  email: unknown
+  branch: cpp-clang-tools-12
+  remote: https://github.com/kou/arrow.git
+  version: 7.0.0.dev237
+  no_rc_version: 7.0.0.dev237
+  no_rc_semver_version: 7.0.0-dev237
+tasks:
+  test-r-gcc-11: !Task
+    ci: github
+    template: docker-tests/github.linux.yml
+    artifacts: []
+    params:
+      env:
+        UBUNTU: 21.04
+        GCC_VERSION: 11
+      # S3 support is not buildable with gcc11 right now
+      flags: -e ARROW_SOURCE_HOME="/arrow" -e FORCE_BUNDLED_BUILD=TRUE -e LIBARROW_BUILD=TRUE
+        -e ARROW_S3=OFF
+      image: ubuntu-r-only-r
+
+    branch: actions-1227-github-test-r-gcc-11
+    commit: a96fee6c2329af658a505abc3b0221841dfc5ff2
+  test-r-ubuntu-21.04: !Task
+    ci: github
+    template: docker-tests/github.linux.yml
+    artifacts: []
+    params:
+      env:
+        UBUNTU: 21.04
+        R_PRUNE_DEPS: true
+      flags: -e ARROW_SOURCE_HOME="/arrow" -e FORCE_BUNDLED_BUILD=TRUE -e LIBARROW_BUILD=TRUE
+      image: ubuntu-r-only-r
+
+  # This also has -flto=auto
+    branch: actions-1227-github-test-r-ubuntu-21.04
+    commit: 44a35101d68b54b39836f87a19b62a45d52df8d4
+params: {}
+branch: actions-1227
