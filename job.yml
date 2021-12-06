@@ -1,0 +1,28 @@
+!Job
+target: !Target
+  head: 35e5b4f15d3b2566fe0769f34362a965623ebe9a
+  email: unknown
+  branch: release-docs-use-built-artifact
+  remote: https://github.com/kou/arrow.git
+  version: 7.0.0.dev263
+  no_rc_version: 7.0.0.dev263
+  no_rc_semver_version: 7.0.0-dev263
+tasks:
+  test-ubuntu-default-docs: !Task
+    ci: azure
+    template: docker-tests/azure.linux.yml
+    artifacts:
+    - docs.tar.gz
+    params:
+      artifacts: build/docs.tar.gz
+      flags: |
+        -v $PWD/build/:/build/
+      image: ubuntu-docs
+      post_script: |
+        cd build
+        sudo chown -R ${USER}: .
+        tar cvzf docs.tar.gz docs
+    branch: actions-1252-azure-test-ubuntu-default-docs
+    commit: db657f974430f66c4810d0d5800a0fa806ac8b6f
+params: {}
+branch: actions-1252
