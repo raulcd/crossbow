@@ -1,0 +1,36 @@
+!Job
+target: !Target
+  head: e915a841c687f273d242c856ea9ca16a793c52fa
+  email: unknown
+  branch: jonkeane-patch-1
+  remote: https://github.com/apache/arrow.git
+  version: 7.0.0.dev278
+  no_rc_version: 7.0.0.dev278
+  no_rc_semver_version: 7.0.0-dev278
+tasks:
+  test-r-ubuntu-21.04: !Task
+    ci: github
+    template: docker-tests/github.linux.yml
+    artifacts: []
+    params:
+      env:
+        UBUNTU: 21.04
+        R_PRUNE_DEPS: true
+      flags: -e ARROW_SOURCE_HOME="/arrow" -e FORCE_BUNDLED_BUILD=TRUE -e LIBARROW_BUILD=TRUE
+      image: ubuntu-r-only-r
+
+  # This also has -flto=auto
+    branch: actions-1267-github-test-r-ubuntu-21.04
+    commit: 31680af0e9d206affcd5c09bdee7250ab1a1a419
+  test-r-rhub-ubuntu-gcc-release-latest: !Task
+    ci: azure
+    template: r/azure.linux.yml
+    artifacts: []
+    params:
+      r_org: rhub
+      r_image: ubuntu-gcc-release
+      r_tag: latest
+    branch: actions-1267-azure-test-r-rhub-ubuntu-gcc-release-latest
+    commit: 6f45cb390f4eacea998728206a1141685035cf4a
+params: {}
+branch: actions-1267
