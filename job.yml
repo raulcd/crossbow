@@ -1,0 +1,62 @@
+!Job
+target: !Target
+  head: 01b8dc76e8f88ae377e25a44f1e2dc2b20a340f5
+  email: unknown
+  branch: ARROW-14510-clean-build
+  remote: https://github.com/jonkeane/arrow.git
+  version: 7.0.0.dev336
+  no_rc_version: 7.0.0.dev336
+  no_rc_semver_version: 7.0.0-dev336
+tasks:
+  test-ubuntu-18.04-r-sanitizer: !Task
+    ci: azure
+    template: docker-tests/azure.linux.yml
+    artifacts: []
+    params:
+      env:
+        UBUNTU: 18.04
+        R_PRUNE_DEPS: true
+      image: ubuntu-r-sanitizer
+
+    branch: actions-1293-azure-test-ubuntu-18.04-r-sanitizer
+    commit: 7bc1476aa9f5a002c8b14a42650d14ec12cb04b2
+  test-ubuntu-default-docs: !Task
+    ci: azure
+    template: docker-tests/azure.linux.yml
+    artifacts:
+    - docs.tar.gz
+    params:
+      artifacts: build/docs.tar.gz
+      flags: -v $PWD/build/:/build/
+      image: ubuntu-docs
+      post_script: |
+        cd build
+        sudo chown -R ${USER}: .
+        tar cvzf docs.tar.gz docs
+    branch: actions-1293-azure-test-ubuntu-default-docs
+    commit: 70b50aabad2676131fe7b27c791ff24469548129
+  test-fedora-r-clang-sanitizer: !Task
+    ci: azure
+    template: docker-tests/azure.linux.yml
+    artifacts: []
+    params:
+      env:
+        R_PRUNE_DEPS: true
+      image: fedora-r-clang-sanitizer
+
+    branch: actions-1293-azure-test-fedora-r-clang-sanitizer
+    commit: 84fe9630925585cc17348e3cb756e4d2d82e6bb6
+  test-r-linux-valgrind: !Task
+    ci: azure
+    template: docker-tests/azure.linux.yml
+    artifacts: []
+    params:
+      env:
+        ARROW_R_DEV: 'TRUE'
+        UBUNTU: 18.04
+      image: ubuntu-r-valgrind
+
+    branch: actions-1293-azure-test-r-linux-valgrind
+    commit: 484b90f443d7944452d31806ecb66c92b51b8120
+params: {}
+branch: actions-1293
