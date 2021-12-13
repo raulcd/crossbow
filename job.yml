@@ -1,0 +1,65 @@
+!Job
+target: !Target
+  head: 450f251d84a7f5d7223edcd2c0e9b90e9bf0006c
+  email: unknown
+  branch: ARROW-14510-clean-build
+  remote: https://github.com/jonkeane/arrow.git
+  version: 7.0.0.dev335
+  no_rc_version: 7.0.0.dev335
+  no_rc_semver_version: 7.0.0-dev335
+tasks:
+  test-r-linux-valgrind: !Task
+    ci: azure
+    template: docker-tests/azure.linux.yml
+    artifacts: []
+    params:
+      env:
+        ARROW_R_DEV: 'TRUE'
+        UBUNTU: 18.04
+        ARROW_SOURCE_HOME: /arrow
+      image: ubuntu-r-valgrind
+
+    branch: actions-1292-azure-test-r-linux-valgrind
+    commit: 31e2fb783832a8053af660251c68c48eabaa5112
+  test-ubuntu-18.04-r-sanitizer: !Task
+    ci: azure
+    template: docker-tests/azure.linux.yml
+    artifacts: []
+    params:
+      env:
+        UBUNTU: 18.04
+        R_PRUNE_DEPS: true
+        ARROW_SOURCE_HOME: /arrow
+      image: ubuntu-r-sanitizer
+
+    branch: actions-1292-azure-test-ubuntu-18.04-r-sanitizer
+    commit: 30dca300abf23e97ddbd36e24a96f394b42fe258
+  test-ubuntu-default-docs: !Task
+    ci: azure
+    template: docker-tests/azure.linux.yml
+    artifacts:
+    - docs.tar.gz
+    params:
+      artifacts: build/docs.tar.gz
+      flags: -v $PWD/build/:/build/
+      image: ubuntu-docs
+      post_script: |
+        cd build
+        sudo chown -R ${USER}: .
+        tar cvzf docs.tar.gz docs
+    branch: actions-1292-azure-test-ubuntu-default-docs
+    commit: 24e48d4a0caec66fd06b418c2a344ff732fb9c6e
+  test-fedora-r-clang-sanitizer: !Task
+    ci: azure
+    template: docker-tests/azure.linux.yml
+    artifacts: []
+    params:
+      env:
+        R_PRUNE_DEPS: true
+        ARROW_SOURCE_HOME: /arrow
+      image: fedora-r-clang-sanitizer
+
+    branch: actions-1292-azure-test-fedora-r-clang-sanitizer
+    commit: 5ef38931b436fe802fc2b8b0c712d4a51c6cf0fe
+params: {}
+branch: actions-1292
