@@ -1,0 +1,126 @@
+!Job
+target: !Target
+  head: cff18aedf3f8c07237fedd736a7267c9d5bdc680
+  email: unknown
+  branch: ARROW-15122
+  remote: https://github.com/jonkeane/arrow.git
+  github_repo: jonkeane/arrow
+  version: 7.0.0.dev366
+  no_rc_version: 7.0.0.dev366
+  no_rc_semver_version: 7.0.0-dev366
+tasks:
+  test-r-rstudio-r-base-4.1-centos8: !Task
+    ci: azure
+    template: r/azure.linux.yml
+    artifacts: []
+    params:
+      r_org: rstudio
+      r_image: r-base
+      r_tag: 4.1-centos8
+    branch: actions-1321-azure-test-r-rstudio-r-base-4.1-centos8
+    commit: 3141628ed9aada9871b03a4059b2a76f836f515f
+  test-r-minimal-build: !Task
+    ci: azure
+    template: r/azure.linux.yml
+    artifacts: []
+    params:
+      r_org: rocker
+      r_image: r-base
+      r_tag: latest
+      flags: -e LIBARROW_MINIMAL=TRUE
+
+    branch: actions-1321-azure-test-r-minimal-build
+    commit: 2c20c74e717cd87689e5a5494ea14693b13f6b45
+  test-r-offline-minimal: !Task
+    ci: azure
+    template: r/azure.linux.yml
+    artifacts: []
+    params:
+      r_org: rocker
+      r_image: r-base
+      r_tag: latest
+      flags: -e TEST_OFFLINE_BUILD=true
+
+    branch: actions-1321-azure-test-r-offline-minimal
+    commit: 3aabfb077189c3ce6b1de87928c53fdc30bb3cef
+  test-r-versions: !Task
+    ci: github
+    template: r/github.linux.versions.yml
+    artifacts: []
+    params:
+      MATRIX: ${{ matrix.r_version }}
+
+    branch: actions-1321-github-test-r-versions
+    commit: 9774da6c58cd6ba11bf427c6c2adecc0d54af430
+  test-r-rhub-ubuntu-gcc-release-latest: !Task
+    ci: azure
+    template: r/azure.linux.yml
+    artifacts: []
+    params:
+      r_org: rhub
+      r_image: ubuntu-gcc-release
+      r_tag: latest
+    branch: actions-1321-azure-test-r-rhub-ubuntu-gcc-release-latest
+    commit: 9d0d7a1940ef9a713d8e1aff2383b26fd7a5620b
+  test-r-linux-valgrind: !Task
+    ci: azure
+    template: docker-tests/azure.linux.yml
+    artifacts: []
+    params:
+      env:
+        ARROW_R_DEV: 'TRUE'
+        UBUNTU: 18.04
+      image: ubuntu-r-valgrind
+
+    branch: actions-1321-azure-test-r-linux-valgrind
+    commit: 44c6bf8d1aabc79d173bbc2d468ab9a54e14f51f
+  test-r-rstudio-r-base-4.1-centos7-devtoolset-8: !Task
+    ci: azure
+    template: r/azure.linux.yml
+    artifacts: []
+    params:
+      r_org: rstudio
+      r_image: r-base
+      r_tag: 4.1-centos7
+      devtoolset_version: 8
+
+    branch: actions-1321-azure-test-r-rstudio-r-base-4.1-centos7-devtoolset-8
+    commit: e74ff51e0e7e31289760f27c91fafc6e6ac959af
+  test-r-rstudio-r-base-4.1-focal: !Task
+    ci: azure
+    template: r/azure.linux.yml
+    artifacts: []
+    params:
+      r_org: rstudio
+      r_image: r-base
+      r_tag: 4.1-focal
+    branch: actions-1321-azure-test-r-rstudio-r-base-4.1-focal
+    commit: fc6cf6721fdc575eee60376cfd73e49e6218bc4a
+  test-r-rstudio-r-base-4.1-opensuse42: !Task
+    ci: azure
+    template: r/azure.linux.yml
+    artifacts: []
+    params:
+      r_org: rstudio
+      r_image: r-base
+      r_tag: 4.1-opensuse42
+
+  # This is with R built with --enable-lto
+  # CRAN also does R CMD INSTALL --use-LTO
+  # which overrides the UseLTO field in r/DESCRIPTION
+    branch: actions-1321-azure-test-r-rstudio-r-base-4.1-opensuse42
+    commit: 4b01e015b2670d7215d87134b713f2bca166ad55
+  test-ubuntu-18.04-r-sanitizer: !Task
+    ci: azure
+    template: docker-tests/azure.linux.yml
+    artifacts: []
+    params:
+      env:
+        UBUNTU: 18.04
+        R_PRUNE_DEPS: true
+      image: ubuntu-r-sanitizer
+
+    branch: actions-1321-azure-test-ubuntu-18.04-r-sanitizer
+    commit: 280fbd26d8a92706ac46ed2f22dde12b52905f7d
+params: {}
+branch: actions-1321
