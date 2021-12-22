@@ -1,0 +1,605 @@
+!Job
+target: !Target
+  head: b0664f0cc9da42cd05c7aa2953e0db80cf242956
+  email: unknown
+  branch: ARROW-12706-drop-py36
+  remote: https://github.com/pitrou/arrow.git
+  github_repo: pitrou/arrow
+  version: 7.0.0.dev387
+  no_rc_version: 7.0.0.dev387
+  no_rc_semver_version: 7.0.0-dev387
+tasks:
+  conda-linux-gcc-py37-cpu-r40: !Task
+    ci: azure
+    template: conda-recipes/azure.linux.yml
+    artifacts:
+    - arrow-cpp-7.0.0.dev387-py37(h[a-z0-9]+)_0_cpu.tar.bz2
+    - pyarrow-7.0.0.dev387-py37(h[a-z0-9]+)_0_cpu.tar.bz2
+    params:
+      config: linux_64_cuda_compiler_versionNonenumpy1.17python3.7.____cpython
+      r_config: linux_64_r_base4.0
+    branch: actions-1338-azure-conda-linux-gcc-py37-cpu-r40
+    commit: 767f2391257135d17b2e50e85093cb7e7e3cf338
+  conda-linux-gcc-py38-arm64: !Task
+    ci: azure
+    template: conda-recipes/azure.linux.yml
+    artifacts:
+    - arrow-cpp-7.0.0.dev387-py38(h[a-z0-9]+)_0_cpu.tar.bz2
+    - pyarrow-7.0.0.dev387-py38(h[a-z0-9]+)_0_cpu.tar.bz2
+    params:
+      config: linux_aarch64_numpy1.17python3.8.____cpython
+    branch: actions-1338-azure-conda-linux-gcc-py38-arm64
+    commit: 617e2521f3aa7626958c5e2638cf65755f6e231c
+  test-conda-python-3.7-kartothek-latest: !Task
+    ci: github
+    template: docker-tests/github.linux.yml
+    artifacts: []
+    params:
+      env:
+        PYTHON: 3.7
+        KARTOTHEK: latest
+      flags: --no-leaf-cache
+      image: conda-python-kartothek
+    branch: actions-1338-github-test-conda-python-3.7-kartothek-latest
+    commit: dca510c47cc85681cde9a0a2450d94f7c00042c3
+  conda-osx-arm64-clang-py39: !Task
+    ci: azure
+    template: conda-recipes/azure.osx.yml
+    artifacts:
+    - arrow-cpp-7.0.0.dev387-py39(h[a-z0-9]+)_0_cpu.tar.bz2
+    - pyarrow-7.0.0.dev387-py39(h[a-z0-9]+)_0_cpu.tar.bz2
+    params:
+      config: osx_arm64_python3.9.____cpython
+    branch: actions-1338-azure-conda-osx-arm64-clang-py39
+    commit: fcffd3fc881cf0be44e2f1f6c7472d4b71c535c3
+  conda-linux-gcc-py37-cuda: !Task
+    ci: azure
+    template: conda-recipes/azure.linux.yml
+    artifacts:
+    - arrow-cpp-7.0.0.dev387-py37(h[a-z0-9]+)_0_cuda.tar.bz2
+    - pyarrow-7.0.0.dev387-py37(h[a-z0-9]+)_0_cuda.tar.bz2
+    params:
+      config: linux_64_cuda_compiler_version10.2numpy1.17python3.7.____cpython
+    branch: actions-1338-azure-conda-linux-gcc-py37-cuda
+    commit: b61cb176f3e367f84bc003b4d2886596bd908462
+  test-conda-python-3.7-kartothek-master: !Task
+    ci: github
+    template: docker-tests/github.linux.yml
+    artifacts: []
+    params:
+      env:
+        PYTHON: 3.7
+        KARTOTHEK: master
+      flags: --no-leaf-cache
+      image: conda-python-kartothek
+
+    branch: actions-1338-github-test-conda-python-3.7-kartothek-master
+    commit: aa81c59c5f699ed6ba006dde2f86a49ba0efcd42
+  test-conda-python-3.8: !Task
+    ci: github
+    template: docker-tests/github.linux.yml
+    artifacts: []
+    params:
+      env:
+        PYTHON: '3.8'
+      image: conda-python
+    branch: actions-1338-github-test-conda-python-3.8
+    commit: 39363ec323fc9f804876a8b43fe58379613f1489
+  test-debian-11-python-3: !Task
+    ci: azure
+    template: docker-tests/azure.linux.yml
+    artifacts: []
+    params:
+      env:
+        DEBIAN: 11
+      image: debian-python
+
+    branch: actions-1338-azure-test-debian-11-python-3
+    commit: fc84082598108792ada84c912312302b8162bc04
+  conda-linux-gcc-py39-arm64: !Task
+    ci: azure
+    template: conda-recipes/azure.linux.yml
+    artifacts:
+    - arrow-cpp-7.0.0.dev387-py39(h[a-z0-9]+)_0_cpu.tar.bz2
+    - pyarrow-7.0.0.dev387-py39(h[a-z0-9]+)_0_cpu.tar.bz2
+    params:
+      config: linux_aarch64_numpy1.19python3.9.____cpython
+    branch: actions-1338-azure-conda-linux-gcc-py39-arm64
+    commit: bfff5981817643a1c3dc2ef8c94003562f3b78a4
+  test-conda-python-3.9-dask-master: !Task
+    ci: github
+    template: docker-tests/github.linux.yml
+    artifacts: []
+    params:
+      env:
+        PYTHON: 3.9
+        DASK: master
+      # use the latest dask release, so prevent reusing any cached layers
+      flags: --no-leaf-cache
+      image: conda-python-dask
+
+# TEMP disable because those are failing due to needing upstream fix (ARROW-13594)
+# #   test-conda-python-3.7-turbodbc-latest:
+#     ci: github
+#     template: docker-tests/github.linux.yml
+#     params:
+#       env:
+#         PYTHON: 3.7
+#         TURBODBC: latest
+#       # use the latest turbodbc release, so prevent reusing any cached layers
+#       flags: --no-leaf-cache
+#       image: conda-python-turbodbc
+# #   test-conda-python-3.7-turbodbc-master:
+#     ci: github
+#     template: docker-tests/github.linux.yml
+#     params:
+#       env:
+#         PYTHON: 3.7
+#         TURBODBC: master
+#       # use the latest turbodbc release, so prevent reusing any cached layers
+#       flags: --no-leaf-cache
+#       image: conda-python-turbodbc
+# 
+    branch: actions-1338-github-test-conda-python-3.9-dask-master
+    commit: ce7d08e5ff97871516770d0e9e97a4baf3e9accb
+  conda-win-vs2017-py38: !Task
+    ci: azure
+    template: conda-recipes/azure.win.yml
+    artifacts:
+    - arrow-cpp-7.0.0.dev387-py38(h[a-z0-9]+)_0_cpu.tar.bz2
+    - pyarrow-7.0.0.dev387-py38(h[a-z0-9]+)_0_cpu.tar.bz2
+    params:
+      config: win_64_cuda_compiler_versionNonenumpy1.17python3.8.____cpython
+    branch: actions-1338-azure-conda-win-vs2017-py38
+    commit: 1956ba90ed6eef781fb90f91fd1598db7c462ff1
+  conda-osx-clang-py39: !Task
+    ci: azure
+    template: conda-recipes/azure.osx.yml
+    artifacts:
+    - arrow-cpp-7.0.0.dev387-py39(h[a-z0-9]+)_0_cpu.tar.bz2
+    - pyarrow-7.0.0.dev387-py39(h[a-z0-9]+)_0_cpu.tar.bz2
+    params:
+      config: osx_64_numpy1.19python3.9.____cpython
+    branch: actions-1338-azure-conda-osx-clang-py39
+    commit: ca413b03abb873c40ebc3e3d9408292a849fa9b1
+  test-conda-python-3.7-hdfs-3.2.1: !Task
+    ci: github
+    template: docker-tests/github.linux.yml
+    artifacts: []
+    params:
+      env:
+        PYTHON: 3.7
+        HDFS: 3.2.1
+      image: conda-python-hdfs
+
+    branch: actions-1338-github-test-conda-python-3.7-hdfs-3.2.1
+    commit: 13b4ddebd1b5ddfea8980a9e65f6906dcb55c5a2
+  test-conda-python-3.9-spark-master: !Task
+    ci: github
+    template: docker-tests/github.linux.yml
+    artifacts: []
+    params:
+      env:
+        PYTHON: '3.9'
+        SPARK: master
+        TEST_PYARROW_ONLY: 'false'
+      # use the branch-3.0 of spark, so prevent reusing any layers
+      flags: --no-leaf-cache
+      image: conda-python-spark
+
+  # Remove the "skipped-" prefix in ARROW-8475
+    branch: actions-1338-github-test-conda-python-3.9-spark-master
+    commit: 04957d60cc812038993756d9f445ccf518b387c4
+  conda-linux-gcc-py38-cpu: !Task
+    ci: azure
+    template: conda-recipes/azure.linux.yml
+    artifacts:
+    - arrow-cpp-7.0.0.dev387-py38(h[a-z0-9]+)_0_cpu.tar.bz2
+    - pyarrow-7.0.0.dev387-py38(h[a-z0-9]+)_0_cpu.tar.bz2
+    params:
+      config: linux_64_cuda_compiler_versionNonenumpy1.17python3.8.____cpython
+    branch: actions-1338-azure-conda-linux-gcc-py38-cpu
+    commit: d785874dbcdfd523a82f1c81ba174ac767448999
+  test-fedora-33-python-3: !Task
+    ci: azure
+    template: docker-tests/azure.linux.yml
+    artifacts: []
+    params:
+      env:
+        FEDORA: 33
+      image: fedora-python
+
+    branch: actions-1338-azure-test-fedora-33-python-3
+    commit: f8bf3a61388e1fa0a6d076198e9b66a98c010893
+  conda-osx-clang-py37-r41: !Task
+    ci: azure
+    template: conda-recipes/azure.osx.yml
+    artifacts:
+    - arrow-cpp-7.0.0.dev387-py37(h[a-z0-9]+)_0_cpu.tar.bz2
+    - pyarrow-7.0.0.dev387-py37(h[a-z0-9]+)_0_cpu.tar.bz2
+    params:
+      config: osx_64_numpy1.17python3.7.____cpython
+      r_config: osx_64_r_base4.1
+    branch: actions-1338-azure-conda-osx-clang-py37-r41
+    commit: eef0ca999bc01f0d58394f0ea02f0a4e530f4300
+  conda-linux-gcc-py38-cuda: !Task
+    ci: azure
+    template: conda-recipes/azure.linux.yml
+    artifacts:
+    - arrow-cpp-7.0.0.dev387-py38(h[a-z0-9]+)_0_cuda.tar.bz2
+    - pyarrow-7.0.0.dev387-py38(h[a-z0-9]+)_0_cuda.tar.bz2
+    params:
+      config: linux_64_cuda_compiler_version10.2numpy1.17python3.8.____cpython
+    branch: actions-1338-azure-conda-linux-gcc-py38-cuda
+    commit: 828e6545abd58350bde73b87eef9630e809c25cf
+  verify-rc-source-python-macos-arm64: !Task
+    ci: github
+    template: verify-rc/github.macos.arm64.yml
+    artifacts: []
+    params:
+      env:
+        ARROW_FLIGHT: 0
+        ARROW_GANDIVA: 0
+        TEST_DEFAULT: 0
+        TEST_INTEGRATION_JAVA: 0
+        TEST_PYTHON: 1
+      artifact: source
+      github_runner: self-hosted
+
+    branch: actions-1338-github-verify-rc-source-python-macos-arm64
+    commit: 45d9a3e8c80efff6242ae3624ba6e89cc4513665
+  verify-rc-source-python-linux-ubuntu-18.04-amd64: !Task
+    ci: github
+    template: docker-tests/github.linux.yml
+    artifacts: []
+    params:
+      flags: >-
+        -e TEST_DEFAULT=0
+        -e TEST_PYTHON=1
+      image: ubuntu-verify-rc-source
+
+    branch: actions-1338-github-verify-rc-source-python-linux-ubuntu-18.04-amd64
+    commit: d96689262a8583a186af824d56cd5c00644849f2
+  test-conda-python-3.7-hdfs-2.9.2: !Task
+    ci: github
+    template: docker-tests/github.linux.yml
+    artifacts: []
+    params:
+      env:
+        PYTHON: 3.7
+        HDFS: 2.9.2
+      image: conda-python-hdfs
+    branch: actions-1338-github-test-conda-python-3.7-hdfs-2.9.2
+    commit: f428ef4ad0314f51d7e3d9ab4aa620543819a7cd
+  test-conda-python-3.8-spark-v3.2.0: !Task
+    ci: github
+    template: docker-tests/github.linux.yml
+    artifacts: []
+    params:
+      env:
+        PYTHON: '3.8'
+        SPARK: v3.2.0
+        TEST_PYARROW_ONLY: 'false'
+      # use the branch-3.0 of spark, so prevent reusing any layers
+      flags: --no-leaf-cache
+      image: conda-python-spark
+    branch: actions-1338-github-test-conda-python-3.8-spark-v3.2.0
+    commit: 8136f7968ada73e3e3bc425ff7a98950b50d1cef
+  conda-osx-arm64-clang-py38: !Task
+    ci: azure
+    template: conda-recipes/azure.osx.yml
+    artifacts:
+    - arrow-cpp-7.0.0.dev387-py38(h[a-z0-9]+)_0_cpu.tar.bz2
+    - pyarrow-7.0.0.dev387-py38(h[a-z0-9]+)_0_cpu.tar.bz2
+    params:
+      config: osx_arm64_python3.8.____cpython
+    branch: actions-1338-azure-conda-osx-arm64-clang-py38
+    commit: f2dc774acaf416e8b10a979c2cf141c9573b37d3
+  conda-win-vs2017-py39: !Task
+    ci: azure
+    template: conda-recipes/azure.win.yml
+    artifacts:
+    - arrow-cpp-7.0.0.dev387-py38(h[a-z0-9]+)_0_cpu.tar.bz2
+    - pyarrow-7.0.0.dev387-py38(h[a-z0-9]+)_0_cpu.tar.bz2
+    params:
+      config: win_64_cuda_compiler_versionNonenumpy1.19python3.9.____cpython
+    branch: actions-1338-azure-conda-win-vs2017-py39
+    commit: 90427ec4899a8023083b3f4087da8d3dc4424930
+  test-conda-python-3.8-pandas-nightly: !Task
+    ci: github
+    template: docker-tests/github.linux.yml
+    artifacts: []
+    params:
+      env:
+        PYTHON: '3.8'
+        PANDAS: nightly
+        NUMPY: nightly
+      image: conda-python-pandas
+    branch: actions-1338-github-test-conda-python-3.8-pandas-nightly
+    commit: fc21fd957d67698c56ea2b2f5b5dc27d36065439
+  conda-linux-gcc-py310-arm64: !Task
+    ci: azure
+    template: conda-recipes/azure.linux.yml
+    artifacts:
+    - arrow-cpp-7.0.0.dev387-py310(h[a-z0-9]+)_0_cpu.tar.bz2
+    - pyarrow-7.0.0.dev387-py310(h[a-z0-9]+)_0_cpu.tar.bz2
+    params:
+      config: linux_aarch64_numpy1.21python3.10.____cpython
+    branch: actions-1338-azure-conda-linux-gcc-py310-arm64
+    commit: 53a12eb63a08e0e14c5dc72274dbfa0ad9b29409
+  test-conda-python-3.9: !Task
+    ci: github
+    template: docker-tests/github.linux.yml
+    artifacts: []
+    params:
+      env:
+        PYTHON: '3.9'
+      image: conda-python
+    branch: actions-1338-github-test-conda-python-3.9
+    commit: 2b8565b939434ac1d0f500bc332472f664d2abaa
+  test-conda-python-3.7-pandas-latest: !Task
+    ci: github
+    template: docker-tests/github.linux.yml
+    artifacts: []
+    params:
+      env:
+        PYTHON: '3.7'
+        PANDAS: latest
+        NUMPY: latest
+      image: conda-python-pandas
+    branch: actions-1338-github-test-conda-python-3.7-pandas-latest
+    commit: 74a1d786c2a8f0a9b165ffdc0313e3b05e4511c9
+  test-conda-python-3.7-pandas-0.24: !Task
+    ci: github
+    template: docker-tests/github.linux.yml
+    artifacts: []
+    params:
+      env:
+        PYTHON: '3.7'
+        PANDAS: '0.24'
+        NUMPY: '1.19'
+      # use the latest pandas release, so prevent reusing any cached layers
+      flags: --no-leaf-cache
+      image: conda-python-pandas
+    branch: actions-1338-github-test-conda-python-3.7-pandas-0.24
+    commit: 96b980b692f2268134d577cf0927ceaddeb80131
+  conda-osx-clang-py37-r40: !Task
+    ci: azure
+    template: conda-recipes/azure.osx.yml
+    artifacts:
+    - arrow-cpp-7.0.0.dev387-py37(h[a-z0-9]+)_0_cpu.tar.bz2
+    - pyarrow-7.0.0.dev387-py37(h[a-z0-9]+)_0_cpu.tar.bz2
+    params:
+      config: osx_64_numpy1.17python3.7.____cpython
+      r_config: osx_64_r_base4.0
+    branch: actions-1338-azure-conda-osx-clang-py37-r40
+    commit: 741a34e1e6618742f7e9b34cbe9f314c84505045
+  conda-linux-gcc-py37-arm64: !Task
+    ci: azure
+    template: conda-recipes/azure.linux.yml
+    artifacts:
+    - arrow-cpp-7.0.0.dev387-py37(h[a-z0-9]+)_0_cpu.tar.bz2
+    - pyarrow-7.0.0.dev387-py37(h[a-z0-9]+)_0_cpu.tar.bz2
+    params:
+      config: linux_aarch64_numpy1.17python3.7.____cpython
+    branch: actions-1338-azure-conda-linux-gcc-py37-arm64
+    commit: e9c74da294b3c8454132b637c9e6b6d3bdfd3124
+  test-conda-python-3.8-hypothesis: !Task
+    ci: github
+    template: docker-tests/github.linux.yml
+    artifacts: []
+    params:
+      env:
+        HYPOTHESIS_PROFILE: ci
+        PYARROW_TEST_HYPOTHESIS: ON
+        PYTHON: 3.8
+        # limit to execute hypothesis tests only
+        PYTEST_ARGS: -m hypothesis
+      image: conda-python-pandas
+
+    branch: actions-1338-github-test-conda-python-3.8-hypothesis
+    commit: c693334bb579c19584b7d06b404a948e9f7884e9
+  verify-rc-source-python-linux-ubuntu-20.04-amd64: !Task
+    ci: github
+    template: docker-tests/github.linux.yml
+    artifacts: []
+    params:
+      flags: >-
+        -e TEST_DEFAULT=0
+        -e TEST_PYTHON=1
+      image: ubuntu-verify-rc-source
+
+    branch: actions-1338-github-verify-rc-source-python-linux-ubuntu-20.04-amd64
+    commit: d96689262a8583a186af824d56cd5c00644849f2
+  test-conda-python-3.9-dask-latest: !Task
+    ci: github
+    template: docker-tests/github.linux.yml
+    artifacts: []
+    params:
+      env:
+        PYTHON: 3.9
+        DASK: latest
+      # use the latest dask release, so prevent reusing any cached layers
+      flags: --no-leaf-cache
+      image: conda-python-dask
+    branch: actions-1338-github-test-conda-python-3.9-dask-latest
+    commit: bf73f670ef8c0148befc59eb08389e8e4add7695
+  test-conda-python-3.9-pandas-master: !Task
+    ci: github
+    template: docker-tests/github.linux.yml
+    artifacts: []
+    params:
+      env:
+        PYTHON: '3.9'
+        PANDAS: master
+        NUMPY: nightly
+      image: conda-python-pandas
+
+    branch: actions-1338-github-test-conda-python-3.9-pandas-master
+    commit: e3a6fb46507d20d6effc5d6d77c362065203dea7
+  test-conda-python-3.7: !Task
+    ci: github
+    template: docker-tests/github.linux.yml
+    artifacts: []
+    params:
+      env:
+        PYTHON: '3.7'
+      image: conda-python
+    branch: actions-1338-github-test-conda-python-3.7
+    commit: 19219a35b082697603ca863bdac8a4d22cf57b46
+  conda-win-vs2017-py37-r41: !Task
+    ci: azure
+    template: conda-recipes/azure.win.yml
+    artifacts:
+    - arrow-cpp-7.0.0.dev387-py37(h[a-z0-9]+)_0_cpu.tar.bz2
+    - pyarrow-7.0.0.dev387-py37(h[a-z0-9]+)_0_cpu.tar.bz2
+    params:
+      config: win_64_cuda_compiler_versionNonenumpy1.17python3.7.____cpython
+      r_config: win_64_r_base4.1
+    branch: actions-1338-azure-conda-win-vs2017-py37-r41
+    commit: a8f0b5c225872dbfb5e8f077728d585f53d0edce
+  test-conda-python-3.8-pandas-latest: !Task
+    ci: github
+    template: docker-tests/github.linux.yml
+    artifacts: []
+    params:
+      env:
+        PYTHON: '3.8'
+        PANDAS: latest
+        NUMPY: latest
+      image: conda-python-pandas
+    branch: actions-1338-github-test-conda-python-3.8-pandas-latest
+    commit: c5a21b6a96724d447996bda1b0aac8e175f929fa
+  verify-rc-source-python-macos-amd64: !Task
+    ci: github
+    template: verify-rc/github.macos.amd64.yml
+    artifacts: []
+    params:
+      env:
+        TEST_DEFAULT: 0
+        TEST_PYTHON: 1
+      artifact: source
+      github_runner: macos-10.15
+
+    branch: actions-1338-github-verify-rc-source-python-macos-amd64
+    commit: 3feec4fa7efd074e6284a9614333016e8c788f5e
+  conda-linux-gcc-py39-cpu: !Task
+    ci: azure
+    template: conda-recipes/azure.linux.yml
+    artifacts:
+    - arrow-cpp-7.0.0.dev387-py39(h[a-z0-9]+)_0_cpu.tar.bz2
+    - pyarrow-7.0.0.dev387-py39(h[a-z0-9]+)_0_cpu.tar.bz2
+    params:
+      config: linux_64_cuda_compiler_versionNonenumpy1.19python3.9.____cpython
+    branch: actions-1338-azure-conda-linux-gcc-py39-cpu
+    commit: b96a4918e098de54279de9330997e72f6d51bc1d
+  conda-linux-gcc-py310-cuda: !Task
+    ci: azure
+    template: conda-recipes/azure.linux.yml
+    artifacts:
+    - arrow-cpp-7.0.0.dev387-py310(h[a-z0-9]+)_0_cuda.tar.bz2
+    - pyarrow-7.0.0.dev387-py310(h[a-z0-9]+)_0_cuda.tar.bz2
+    params:
+      config: linux_64_cuda_compiler_version10.2numpy1.21python3.10.____cpython
+    branch: actions-1338-azure-conda-linux-gcc-py310-cuda
+    commit: b9e0a529b9871da999efb0ba1d7dbcbcecc00c16
+  conda-linux-gcc-py37-cpu-r41: !Task
+    ci: azure
+    template: conda-recipes/azure.linux.yml
+    artifacts:
+    - arrow-cpp-7.0.0.dev387-py37(h[a-z0-9]+)_0_cpu.tar.bz2
+    - pyarrow-7.0.0.dev387-py37(h[a-z0-9]+)_0_cpu.tar.bz2
+    params:
+      config: linux_64_cuda_compiler_versionNonenumpy1.17python3.7.____cpython
+      r_config: linux_64_r_base4.1
+    branch: actions-1338-azure-conda-linux-gcc-py37-cpu-r41
+    commit: 67da8b666766cae9ac84b187cdf05c5d8a11bd44
+  test-conda-python-3.10: !Task
+    ci: github
+    template: docker-tests/github.linux.yml
+    artifacts: []
+    params:
+      env:
+        PYTHON: '3.10'
+      image: conda-python
+
+    branch: actions-1338-github-test-conda-python-3.10
+    commit: 6b4ffeb8ed30244f7937df5711f6100eae31d442
+  conda-linux-gcc-py39-cuda: !Task
+    ci: azure
+    template: conda-recipes/azure.linux.yml
+    artifacts:
+    - arrow-cpp-7.0.0.dev387-py39(h[a-z0-9]+)_0_cuda.tar.bz2
+    - pyarrow-7.0.0.dev387-py39(h[a-z0-9]+)_0_cuda.tar.bz2
+    params:
+      config: linux_64_cuda_compiler_version10.2numpy1.19python3.9.____cpython
+    branch: actions-1338-azure-conda-linux-gcc-py39-cuda
+    commit: 6629514b69a74a13e30c41335c3fa6629d9d200f
+  test-ubuntu-18.04-python-3: !Task
+    ci: azure
+    template: docker-tests/azure.linux.yml
+    artifacts: []
+    params:
+      env:
+        UBUNTU: 18.04
+      image: ubuntu-python
+
+    branch: actions-1338-azure-test-ubuntu-18.04-python-3
+    commit: 9318acea5362a0f74fa1670714b5a74ee54affa3
+  conda-win-vs2017-py37-r40: !Task
+    ci: azure
+    template: conda-recipes/azure.win.yml
+    artifacts:
+    - arrow-cpp-7.0.0.dev387-py37(h[a-z0-9]+)_0_cpu.tar.bz2
+    - pyarrow-7.0.0.dev387-py37(h[a-z0-9]+)_0_cpu.tar.bz2
+    params:
+      config: win_64_cuda_compiler_versionNonenumpy1.17python3.7.____cpython
+      r_config: win_64_r_base4.0
+    branch: actions-1338-azure-conda-win-vs2017-py37-r40
+    commit: 405cc7e0754b27114e564cad3fb3d88fe51f9323
+  python-sdist: !Task
+    ci: github
+    template: python-sdist/github.yml
+    artifacts:
+    - pyarrow-7.0.0.dev387.tar.gz
+    params: {}
+    branch: actions-1338-github-python-sdist
+    commit: 61a23976902deff69dad4e14d39295d94ef9c9c5
+  conda-osx-clang-py38: !Task
+    ci: azure
+    template: conda-recipes/azure.osx.yml
+    artifacts:
+    - arrow-cpp-7.0.0.dev387-py38(h[a-z0-9]+)_0_cpu.tar.bz2
+    - pyarrow-7.0.0.dev387-py38(h[a-z0-9]+)_0_cpu.tar.bz2
+    params:
+      config: osx_64_numpy1.17python3.8.____cpython
+    branch: actions-1338-azure-conda-osx-clang-py38
+    commit: 1516c597e11e8d20b2ca50f1b01c2eb760e18add
+  verify-rc-source-python-linux-almalinux-8-amd64: !Task
+    ci: github
+    template: docker-tests/github.linux.yml
+    artifacts: []
+    params:
+      flags: >-
+        -e TEST_DEFAULT=0
+        -e TEST_PYTHON=1
+      image: almalinux-verify-rc-source
+
+    branch: actions-1338-github-verify-rc-source-python-linux-almalinux-8-amd64
+    commit: 88c76357802e3d3ebfe9551d0a02f0a748d6f779
+  test-conda-python-3.7-spark-v3.1.2: !Task
+    ci: github
+    template: docker-tests/github.linux.yml
+    artifacts: []
+    params:
+      env:
+        PYTHON: '3.7'
+        SPARK: v3.1.2
+        TEST_PYARROW_ONLY: 'false'
+      # use the branch-3.0 of spark, so prevent reusing any layers
+      flags: --no-leaf-cache
+      image: conda-python-spark
+    branch: actions-1338-github-test-conda-python-3.7-spark-v3.1.2
+    commit: 9c2027ee3eef629f2e3d52ae981e589e1177b2ff
+params: {}
+branch: actions-1338
