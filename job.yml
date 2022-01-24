@@ -1,0 +1,63 @@
+!Job
+target: !Target
+  head: 8263e7eec9937cb156b3eaab5896fcc6f87e2486
+  email: unknown
+  branch: release-7.0.0-rc6
+  remote: https://github.com/apache/arrow.git
+  github_repo: apache/arrow
+  version: 8.0.0.dev6
+  no_rc_version: 8.0.0.dev6
+  no_rc_semver_version: 8.0.0-dev6
+tasks:
+  verify-rc-wheels-macos-11-amd64: !Task
+    ci: github
+    template: verify-rc/github.macos.arm64.yml
+    artifacts: []
+    params:
+      github_runner: self-hosted
+      arch_emulation: x86_64
+      env:
+        TEST_DEFAULT: 0
+        PYARROW_TEST_GDB: OFF
+        PYTEST_ADDOPTS: -k 'not test_cancellation'
+      artifact: wheels
+
+    branch: actions-1481-github-verify-rc-wheels-macos-11-amd64
+    commit: 6699f98293ab5bcd52c2671d53b4a51fc5ae19b2
+  verify-rc-source-python-macos-arm64: !Task
+    ci: github
+    template: verify-rc/github.macos.arm64.yml
+    artifacts: []
+    params:
+      env:
+        ARROW_FLIGHT: 0
+        ARROW_GANDIVA: 0
+        TEST_DEFAULT: 0
+        TEST_INTEGRATION_JAVA: 0
+        TEST_PYTHON: 1
+        PYARROW_TEST_GDB: OFF
+        PYTEST_ADDOPTS: -k 'not test_cancellation'
+      artifact: source
+      github_runner: self-hosted
+
+    branch: actions-1481-github-verify-rc-source-python-macos-arm64
+    commit: edd160836d14c057054941424a627605619dd30a
+  verify-rc-wheels-macos-11-arm64: !Task
+    ci: github
+    template: verify-rc/github.macos.arm64.yml
+    artifacts: []
+    params:
+      github_runner: self-hosted
+      arch_emulation: arm64
+      env:
+        TEST_DEFAULT: 0
+        PYARROW_TEST_GDB: OFF
+        PYTEST_ADDOPTS: -k 'not test_cancellation'
+      artifact: wheels
+
+    branch: actions-1481-github-verify-rc-wheels-macos-11-arm64
+    commit: 46afa035f18df369ea337818442c7a269623bd0c
+params:
+  release: 7.0.0
+  rc: '6'
+branch: actions-1481
