@@ -1,0 +1,76 @@
+!Job
+target: !Target
+  head: 15e8c9fd8b4690be9efe3df31fd4b5cb506c46d5
+  email: unknown
+  branch: release-7.0.0-rc6
+  remote: https://github.com/apache/arrow.git
+  github_repo: apache/arrow
+  version: 8.0.0.dev1
+  no_rc_version: 8.0.0.dev1
+  no_rc_semver_version: 8.0.0-dev1
+tasks:
+  verify-rc-wheels-windows: !Task
+    ci: github
+    template: verify-rc/github.win.yml
+    artifacts: []
+    params:
+      script: verify-release-candidate-wheels.bat
+
+
+    branch: actions-1476-github-verify-rc-wheels-windows
+    commit: d302e22217c74317733cbc1878f3dcb87f675d73
+  verify-rc-wheels-macos-11-amd64: !Task
+    ci: github
+    template: verify-rc/github.macos.arm64.yml
+    artifacts: []
+    params:
+      github_runner: self-hosted
+      arch_emulation: x86_64
+      env:
+        TEST_DEFAULT: 0
+      artifact: wheels
+
+    branch: actions-1476-github-verify-rc-wheels-macos-11-amd64
+    commit: dba181849bed3690a9711d6630fc6f46830745a8
+  verify-rc-wheels-macos-10.15-amd64: !Task
+    ci: github
+    template: verify-rc/github.macos.amd64.yml
+    artifacts: []
+    params:
+      github_runner: macos-10.15
+      env:
+        TEST_DEFAULT: 0
+      artifact: wheels
+
+  # The github hosted macos-11 runners are in preview only, but should be switched once they are generally available:
+  #   https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners#supported-runners-and-hardware-resources
+    branch: actions-1476-github-verify-rc-wheels-macos-10.15-amd64
+    commit: a3c0261b638d914aaef58ea747c20bd6a5660e31
+  verify-rc-wheels-macos-11-arm64: !Task
+    ci: github
+    template: verify-rc/github.macos.arm64.yml
+    artifacts: []
+    params:
+      github_runner: self-hosted
+      arch_emulation: arm64
+      env:
+        TEST_DEFAULT: 0
+      artifact: wheels
+
+    branch: actions-1476-github-verify-rc-wheels-macos-11-arm64
+    commit: 58a66dca91ef70ccd843197df4b60c893f30dc73
+  verify-rc-wheels-linux-amd64: !Task
+    ci: github
+    template: verify-rc/github.linux.amd64.yml
+    artifacts: []
+    params:
+      env:
+        TEST_DEFAULT: 0
+      artifact: wheels
+
+    branch: actions-1476-github-verify-rc-wheels-linux-amd64
+    commit: 3891392b40ade81e00a3c7dd59797225096b01da
+params:
+  release: 7.0.0
+  rc: '6'
+branch: actions-1476
