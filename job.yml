@@ -1,0 +1,78 @@
+!Job
+target: !Target
+  head: 80c8fc8739c4425fba10e8f8a9871a41f9f7f1db
+  email: unknown
+  branch: release-7.0.0-rc8
+  remote: https://github.com/apache/arrow.git
+  github_repo: apache/arrow
+  version: 8.0.0.dev1
+  no_rc_version: 8.0.0.dev1
+  no_rc_semver_version: 8.0.0-dev1
+tasks:
+  verify-rc-wheels-windows: !Task
+    ci: github
+    template: verify-rc/github.win.yml
+    artifacts: []
+    params:
+      script: verify-release-candidate-wheels.bat
+
+
+    branch: actions-1504-github-verify-rc-wheels-windows
+    commit: 427d6a9cce84643ed6aa3e8371dd6039fa1e0110
+  verify-rc-wheels-linux-amd64: !Task
+    ci: github
+    template: verify-rc/github.linux.amd64.yml
+    artifacts: []
+    params:
+      env:
+        TEST_DEFAULT: 0
+      artifact: wheels
+
+    branch: actions-1504-github-verify-rc-wheels-linux-amd64
+    commit: 442ffe11b01ea1f41dfdedef8543a9a66e93992c
+  verify-rc-wheels-macos-10.15-amd64: !Task
+    ci: github
+    template: verify-rc/github.macos.amd64.yml
+    artifacts: []
+    params:
+      github_runner: macos-10.15
+      env:
+        TEST_DEFAULT: 0
+      artifact: wheels
+
+  # The github hosted macos-11 runners are in preview only, but should be switched once they are generally available:
+  #   https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners#supported-runners-and-hardware-resources
+    branch: actions-1504-github-verify-rc-wheels-macos-10.15-amd64
+    commit: 73baf559e0f9a7e5a95dfe23182c4561c7f4ace6
+  verify-rc-wheels-macos-11-amd64: !Task
+    ci: github
+    template: verify-rc/github.macos.arm64.yml
+    artifacts: []
+    params:
+      github_runner: self-hosted
+      arch_emulation: x86_64
+      env:
+        TEST_DEFAULT: 0
+        PYTEST_ADDOPTS: -k 'not test_cancellation'
+      artifact: wheels
+
+    branch: actions-1504-github-verify-rc-wheels-macos-11-amd64
+    commit: 42ecee1342940da808853f6c6cae1a184933df26
+  verify-rc-wheels-macos-11-arm64: !Task
+    ci: github
+    template: verify-rc/github.macos.arm64.yml
+    artifacts: []
+    params:
+      github_runner: self-hosted
+      arch_emulation: arm64
+      env:
+        TEST_DEFAULT: 0
+        PYTEST_ADDOPTS: -k 'not test_cancellation'
+      artifact: wheels
+
+    branch: actions-1504-github-verify-rc-wheels-macos-11-arm64
+    commit: f05486281937e047bf11b0268be0ac884e64dfb2
+params:
+  release: 7.0.0
+  rc: '8'
+branch: actions-1504
