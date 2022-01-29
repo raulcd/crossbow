@@ -1,0 +1,127 @@
+!Job
+target: !Target
+  head: e90472e35b40f58b17d408438bb8de1641bfe6ef
+  email: unknown
+  branch: release-7.0.0-rc10
+  remote: https://github.com/apache/arrow.git
+  github_repo: apache/arrow
+  version: 8.0.0.dev0
+  no_rc_version: 8.0.0.dev0
+  no_rc_semver_version: 8.0.0-dev0
+tasks:
+  verify-rc-binaries-apt-amd64: !Task
+    ci: github
+    template: verify-rc/github.linux.amd64.yml
+    artifacts: []
+    params:
+      env:
+        TEST_DEFAULT: 0
+        TEST_APT: 1
+      artifact: binaries
+
+    branch: actions-1544-github-verify-rc-binaries-apt-amd64
+    commit: adc92059af6b9f873d7f2ea40fb9d175488f1416
+  verify-rc-wheels-macos-10.15-amd64: !Task
+    ci: github
+    template: verify-rc/github.macos.amd64.yml
+    artifacts: []
+    params:
+      github_runner: macos-10.15
+      env:
+        TEST_DEFAULT: 0
+      artifact: wheels
+
+  # The github hosted macos-11 runners are in preview only, but should be switched once they are generally available:
+  #   https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners#supported-runners-and-hardware-resources
+    branch: actions-1544-github-verify-rc-wheels-macos-10.15-amd64
+    commit: a763ece03f19223c48fe27536b50a8c4e591d87c
+  verify-rc-jars-amd64: !Task
+    ci: github
+    template: verify-rc/github.linux.amd64.yml
+    artifacts: []
+    params:
+      env:
+        TEST_DEFAULT: 0
+        TEST_JARS: 1
+      artifact: jars
+
+
+    branch: actions-1544-github-verify-rc-jars-amd64
+    commit: a6b20e59d5984035ddbdce928191da53f3492d1d
+  verify-rc-binaries-binary-amd64: !Task
+    ci: github
+    template: verify-rc/github.linux.amd64.yml
+    artifacts: []
+    params:
+      env:
+        TEST_DEFAULT: 0
+        TEST_BINARY: 1
+      artifact: binaries
+    branch: actions-1544-github-verify-rc-binaries-binary-amd64
+    commit: 50d85efd6cbf348218edd8654ffdd3d0a762181f
+  verify-rc-wheels-macos-11-arm64: !Task
+    ci: github
+    template: verify-rc/github.macos.arm64.yml
+    artifacts: []
+    params:
+      github_runner: self-hosted
+      arch_emulation: arm64
+      env:
+        TEST_DEFAULT: 0
+        PYTEST_ADDOPTS: -k 'not test_cancellation'
+      artifact: wheels
+
+    branch: actions-1544-github-verify-rc-wheels-macos-11-arm64
+    commit: 1e1512953b6c933786987c97d9c15b8279a033ac
+  verify-rc-wheels-windows: !Task
+    ci: github
+    template: verify-rc/github.win.yml
+    artifacts: []
+    params:
+      env:
+        PYARROW_TEST_GDB: OFF
+      script: verify-release-candidate-wheels.bat
+
+
+    branch: actions-1544-github-verify-rc-wheels-windows
+    commit: ef2edf16bca9ea27b40fd21f402be03d7fbb4968
+  verify-rc-wheels-linux-amd64: !Task
+    ci: github
+    template: verify-rc/github.linux.amd64.yml
+    artifacts: []
+    params:
+      env:
+        TEST_DEFAULT: 0
+      artifact: wheels
+
+    branch: actions-1544-github-verify-rc-wheels-linux-amd64
+    commit: f94669802fe1d8bc7aefc3fcf30254393a6d03f4
+  verify-rc-wheels-macos-11-amd64: !Task
+    ci: github
+    template: verify-rc/github.macos.arm64.yml
+    artifacts: []
+    params:
+      github_runner: self-hosted
+      arch_emulation: x86_64
+      env:
+        TEST_DEFAULT: 0
+        PYTEST_ADDOPTS: -k 'not test_cancellation'
+      artifact: wheels
+
+    branch: actions-1544-github-verify-rc-wheels-macos-11-amd64
+    commit: 5daa3c511e01abce3c4028838df55b2bf56fc3d8
+  verify-rc-binaries-yum-amd64: !Task
+    ci: github
+    template: verify-rc/github.linux.amd64.yml
+    artifacts: []
+    params:
+      env:
+        TEST_DEFAULT: 0
+        TEST_YUM: 1
+      artifact: binaries
+    branch: actions-1544-github-verify-rc-binaries-yum-amd64
+    commit: 9509476b6b6781dcf5ff46dda142413e04547014
+params:
+  release: 7.0.0
+  rc: '10'
+branch: actions-1544
