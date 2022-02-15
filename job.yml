@@ -1,0 +1,61 @@
+!Job
+target: !Target
+  head: 9eebddf921019922f91dd707cec2ec4d0792f880
+  email: unknown
+  branch: ARROW-15468-duckdb-cleanup
+  remote: https://github.com/jonkeane/arrow.git
+  github_repo: jonkeane/arrow
+  version: 8.0.0.dev19
+  no_rc_version: 8.0.0.dev19
+  no_rc_semver_version: 8.0.0-dev19
+tasks:
+  test-r-gcc-11: !Task
+    ci: github
+    template: docker-tests/github.linux.yml
+    artifacts: []
+    params:
+      env:
+        UBUNTU: 21.04
+        GCC_VERSION: 11
+      # S3 support is not buildable with gcc11 right now
+      flags: -e ARROW_S3=OFF
+      image: ubuntu-r-only-r
+
+    branch: actions-1638-github-test-r-gcc-11
+    commit: c0e18e69f0ede4c7bd293a5bab47ecb3843fa89f
+  test-r-depsource-system: !Task
+    ci: github
+    template: docker-tests/github.linux.yml
+    artifacts: []
+    params:
+      flags: -e ARROW_DEPENDENCY_SOURCE=SYSTEM
+      image: ubuntu-r-only-r
+
+    branch: actions-1638-github-test-r-depsource-system
+    commit: d59e5473b704ad52f7a32a1b6ba958d6133167f9
+  test-r-dev-duckdb: !Task
+    ci: github
+    template: docker-tests/github.linux.yml
+    artifacts: []
+    params:
+      env:
+        R_DUCKDB_DEV: true
+      image: ubuntu-r-only-r
+
+    branch: actions-1638-github-test-r-dev-duckdb
+    commit: 7a22d5b6715c78797a2ad1d8771708e10f268e5c
+  test-r-ubuntu-21.04: !Task
+    ci: github
+    template: docker-tests/github.linux.yml
+    artifacts: []
+    params:
+      env:
+        UBUNTU: 21.04
+        R_PRUNE_DEPS: true
+      image: ubuntu-r-only-r
+
+  # This also has -flto=auto
+    branch: actions-1638-github-test-r-ubuntu-21.04
+    commit: d13d3875e6a4418944b9a6768dc3c7447cddf669
+params: {}
+branch: actions-1638
