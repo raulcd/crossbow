@@ -1,0 +1,43 @@
+!Job
+target: !Target
+  head: 7402d3253989a367bda8337a661e879174c14f07
+  email: unknown
+  branch: ARROW-15847
+  remote: https://github.com/jorisvandenbossche/arrow.git
+  github_repo: jorisvandenbossche/arrow
+  version: 8.0.0.dev193
+  no_rc_version: 8.0.0.dev193
+  no_rc_semver_version: 8.0.0-dev193
+tasks:
+  test-conda-python-3.8-pandas-latest: !Task
+    ci: github
+    template: docker-tests/github.linux.yml
+    artifacts: []
+    params:
+      env:
+        PYTHON: '3.8'
+        PANDAS: latest
+        NUMPY: latest
+        # ensure we have at least one build with parquet encryption disabled
+        PARQUET_REQUIRE_ENCRYPTION: OFF
+      # use the latest pandas release, so prevent reusing any cached layers
+      flags: --no-leaf-cache
+      image: conda-python-pandas
+    branch: actions-1747-github-test-conda-python-3.8-pandas-latest
+    commit: 2e71da024e0faadd165cbcf75a95173da57d0301
+  test-conda-python-3.8-pandas-nightly: !Task
+    ci: github
+    template: docker-tests/github.linux.yml
+    artifacts: []
+    params:
+      env:
+        PYTHON: '3.8'
+        PANDAS: nightly
+        NUMPY: nightly
+      # use the latest pandas release, so prevent reusing any cached layers
+      flags: --no-leaf-cache
+      image: conda-python-pandas
+    branch: actions-1747-github-test-conda-python-3.8-pandas-nightly
+    commit: 52779b49e02b79ea57ac67e89d38c92b5f69037a
+params: {}
+branch: actions-1747
