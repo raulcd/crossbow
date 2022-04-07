@@ -1,0 +1,51 @@
+!Job
+target: !Target
+  head: ccb0069a67b4312088fce52a29a859504d11a916
+  email: unknown
+  branch: ci-ubuntu-22.04
+  remote: https://github.com/kou/arrow.git
+  github_repo: kou/arrow
+  version: 8.0.0.dev378
+  no_rc_version: 8.0.0.dev378
+  no_rc_semver_version: 8.0.0-dev378
+tasks:
+  test-r-ubuntu-22.04: !Task
+    ci: github
+    template: docker-tests/github.linux.yml
+    artifacts: []
+    params:
+      env:
+        UBUNTU: 22.04
+        R_PRUNE_DEPS: true
+      image: ubuntu-r-only-r
+
+  # This also has -flto=auto
+    branch: actions-1822-github-test-r-ubuntu-22.04
+    commit: 6bddade390a68274ebbd1d618944b052c5e0988f
+  test-ubuntu-22.04-cpp: !Task
+    ci: github
+    template: docker-tests/github.linux.yml
+    artifacts: []
+    params:
+      env:
+        UBUNTU: '22.04'
+      image: ubuntu-cpp
+
+    branch: actions-1822-github-test-ubuntu-22.04-cpp
+    commit: c6b04129255aca01381b195cb13a01e511265ff1
+  test-r-gcc-11: !Task
+    ci: github
+    template: docker-tests/github.linux.yml
+    artifacts: []
+    params:
+      env:
+        UBUNTU: 22.04
+        GCC_VERSION: 11
+      # S3 support is not buildable with gcc11 right now
+      flags: -e ARROW_S3=OFF
+      image: ubuntu-r-only-r
+
+    branch: actions-1822-github-test-r-gcc-11
+    commit: 59d5745a1fb46aa29adabe8141ce8b2d450a7d35
+params: {}
+branch: actions-1822
